@@ -13,7 +13,7 @@ module.exports = class BundleTest extends Janitor.TestCase
   'test bundle defining require': ->
     dir = path.join __dirname, 'fixtures', 'sample-package'
     bundle = new Bundle dir
-    context = {}
-    (-> eval(bundle.toString())).call context
+    result_in_closure = -> eval bundle.toString()
+    result_in_closure.call context = {}
     @assert context.require
     @assertEqual 'function', typeof(context.require)
