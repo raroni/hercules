@@ -38,6 +38,8 @@ module.exports = class Bundle
       files += "function(exports, require, module) { #{contents} }"
     files += "}"
     
+    console.log(files)
+    
     """
       (function(context) {
         var files = #{files};
@@ -49,7 +51,7 @@ module.exports = class Bundle
         context.require = function(path) {
           path = resolvePath(path);
           var exports = {}
-          files[path](exports, function() {}, module);
+          files[path](exports, context.require, module);
           return exports;
         };
         

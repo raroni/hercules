@@ -26,3 +26,11 @@ module.exports = class BundleTest extends Janitor.TestCase
     result_in_closure.call context = {}
     main = context.require './simple'
     @assertEqual 'Rasmus', main.name
+
+  'test chained require': ->
+    dir = path.join __dirname, 'fixtures', 'sample-package'
+    bundle = new Bundle dir
+    result_in_closure = -> eval bundle.toString()
+    result_in_closure.call context = {}
+    advanced = context.require './advanced'
+    @assertEqual 'Rasmus', advanced.secondary.name
