@@ -1,0 +1,15 @@
+{
+  "name": "browser-bundler",
+  "author": "Rasmus Rønn Nielsen <rasmusrnielsen@gmail.com>",
+  "description": "Makes CommonJS packages usable from the browser.",
+  "version": "0.0.1",
+  "dependencies": {
+    "glob": "2.1.0"
+  },
+  "devDependencies": {
+    "janitor": "0.1.5"
+  },
+  "engines": {
+    "node": "~0.6.6"
+  }
+}
