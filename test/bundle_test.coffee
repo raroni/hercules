@@ -9,3 +9,11 @@ module.exports = class BundleTest extends Janitor.TestCase
     @assertEqual 2, bundle.files().length
     @assertContains bundle.files(), 'main.js'
     @assertContains bundle.files(), 'lib/secondary.js'
+
+  'test bundle defining require': ->
+    dir = path.join __dirname, 'fixtures', 'sample-package'
+    bundle = new Bundle dir
+    context = {}
+    (-> eval(bundle.toString())).call context
+    @assert context.require
+    @assertEqual 'function', typeof(context.require)

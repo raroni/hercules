@@ -24,4 +24,10 @@ module.exports = class Bundle
     console.log 'I cannot compile yet :('
   
   toString: ->
-    '(function() {})();'
+    """
+      (function(context) {
+        context.require = function() {
+          
+        };
+      })(this);
+    """
