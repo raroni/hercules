@@ -6,6 +6,6 @@ module.exports = class BundleTest extends Janitor.TestCase
   'test finding files': ->
     dir = path.join __dirname, 'fixtures', 'sample-package'
     bundle = new Bundle dir
-    @assertEqual 1, bundle.files().length
-
-    
+    @assertEqual 2, bundle.files().length
+    @assertContains bundle.files(), 'main.js'
+    @assertContains bundle.files(), 'secondary.js'

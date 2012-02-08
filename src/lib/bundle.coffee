@@ -8,7 +8,8 @@ module.exports = class Bundle
     @_files ||= (
       glob_search_string = path.join @dir, '**.**'
       files = glob.sync glob_search_string
-      files.filter @shouldBeIncluded
+      files = files.filter @shouldBeIncluded
+      files.map (file) => file.replace(@dir, '').substring(1)
     )
   
   shouldBeIncluded: (file) =>
