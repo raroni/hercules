@@ -59,7 +59,7 @@ module.exports = class Bundle
           var resolved_path = resolvePath(path);
           if(cache[resolved_path]) return cache[resolved_path];
           
-          var exports = {};
+          var exports = cache[resolved_path] = {};
           
           var base_dir = path.split('/').slice(0, path.split('/').length-1).join('/');
           var require = function(new_path) {
@@ -67,7 +67,6 @@ module.exports = class Bundle
             return context.require(full_path);
           };
           files[resolved_path](exports, require, module);
-          cache[resolved_path] = exports;
           return exports;
         };
         

@@ -53,3 +53,11 @@ module.exports = class BundleTest extends Janitor.TestCase
     child = context.require './children/child1'
     @assertEqual 'Parent', child.parent.name
     @assertEqual 'Child 2', child.sibling.name
+
+  'test cycling dependencies': ->
+    dir = path.join __dirname, 'fixtures', 'circular-package'
+    bundle = new Bundle dir
+    result_in_closure = -> eval bundle.toString()
+    result_in_closure.call context = {}
+    b = context.require './b'
+    @assertEqual 'a', b.a();
