@@ -41,6 +41,7 @@ module.exports = class Bundle
     """
       (function(context) {
         var files = #{files};
+        var cache = {};
         var resolvePath = function(path) {
           var parts = path.split('/'), result = [], part;
           
@@ -55,6 +56,9 @@ module.exports = class Bundle
           return result.join('/');
         };
         context.require = function(path) {
+          var resolved_path = resolvePath(path);
+          if(cache[resolved_path]) return cache[resolved_path];
+          
           var exports = {};
           
           var base_dir = path.split('/').slice(0, path.split('/').length-1).join('/');
@@ -62,7 +66,8 @@ module.exports = class Bundle
             full_path = [base_dir, new_path].join('/');
             return context.require(full_path);
           };
-          files[resolvePath(path)](exports, require, module);
+          files[resolved_path](exports, require, module);
+          cache[resolved_path] = exports;
           return exports;
         };
         
