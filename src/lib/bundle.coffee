@@ -61,7 +61,7 @@ module.exports = class Bundle
           
           var exports = cache[resolved_path] = {};
           
-          var base_dir = path.split('/').slice(0, path.split('/').length-1).join('/');
+          var base_dir = path.split('/').slice(0, -1).join('/');
           var require = function(new_path) {
             full_path = [base_dir, new_path].join('/');
             return context.require(full_path);
