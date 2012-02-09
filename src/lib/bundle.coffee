@@ -57,17 +57,17 @@ module.exports = class Bundle
         };
         context.require = function(path) {
           var resolved_path = resolvePath(path);
-          if(cache[resolved_path]) return cache[resolved_path];
+          if(cache[resolved_path]) return cache[resolved_path].exports;
           
-          var exports = cache[resolved_path] = {};
+          var module = cache[resolved_path] = { exports: {} };
           
           var base_dir = path.split('/').slice(0, -1).join('/');
           var require = function(new_path) {
             full_path = [base_dir, new_path].join('/');
             return context.require(full_path);
           };
-          files[resolved_path](exports, require, module);
-          return exports;
+          files[resolved_path](module.exports, require, module);
+          return module.exports;
         };
         
       })(this);
