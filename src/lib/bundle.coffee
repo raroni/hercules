@@ -38,20 +38,31 @@ module.exports = class Bundle
       files += "function(exports, require, module) { #{contents} }"
     files += "}"
     
-    console.log(files)
-    
     """
       (function(context) {
         var files = #{files};
         var resolvePath = function(path) {
-          if(path.substring(0, 2) == './') {
-            return path.substring(2);
+          var parts = path.split('/'), result = [], part;
+          
+          for(var i=0; parts.length>i; i++) {
+            part = parts[i];
+            if(part == '..') {
+              result.pop();
+            } else if(part != '.') {
+              result.push(part);
+            }
           }
+          return result.join('/');
         };
         context.require = function(path) {
-          path = resolvePath(path);
-          var exports = {}
-          files[path](exports, context.require, module);
+          var exports = {};
+          
+          var base_dir = path.split('/').slice(0, path.split('/').length-1).join('/');
+          var require = function(new_path) {
+            full_path = [base_dir, new_path].join('/');
+            return context.require(full_path);
+          };
+          files[resolvePath(path)](exports, require, module);
           return exports;
         };
         
