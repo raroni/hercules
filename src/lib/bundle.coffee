@@ -48,21 +48,22 @@ module.exports = class Bundle
   stripRootDir: (path) =>
     path.replace(@root_dir, '').substring(1)
   
-  toString: ->
+  fileMapAsJSONString: ->
     # Todo: Move this out into own method
-    source_files = "{"
+    output = "{"
     index = 0
     for path, contents of @sourceFileMap()
-      source_files += ", " if index++ != 0
-      source_files += JSON.stringify path
-      source_files += ':'
-      source_files += "function(exports, require, module) { #{contents} }"
-    source_files += "}"
-    
+      output += ", " if index++ != 0
+      output += JSON.stringify path
+      output += ':'
+      output += "function(exports, require, module) { #{contents} }"
+    output += "}"
+  
+  toString: ->
     # Todo: Convert this to Coffeescript somehow?
     """
       (function(context) {
-        var source_files = #{source_files};
+        var source_files = #{@fileMapAsJSONString()};
         var package_files = #{JSON.stringify(@packageFileMap())};
         var cache = {};
         
