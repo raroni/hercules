@@ -23,13 +23,15 @@
   resolveModulePath = (module_name, base_dir) ->
     index = 0
     while !package
-      base_dir =  base_dir + '/..' unless index++ == 0
+      base_dir = base_dir.split('/').slice(0, -1).join '/' unless index++ == 0
       package_dir = resolveFilePath base_dir + '/node_modules/' + module_name
       package_file = package_dir + '/package.json'
       package = package_files[package_file]
+      throw new Error 'Module not found' if !package && base_dir == '.'
     resolveFilePath(package_dir + '/' + package.main)
   
   resolvePath = (path, base_dir) ->
+    base_dir ||= '.'
     if path.substring(0, 1) == '.'
       resolveFilePath path, base_dir
     else

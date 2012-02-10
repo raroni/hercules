@@ -84,7 +84,7 @@ module.exports = class BundleTest extends Janitor.TestCase
     @assertContains bundle.packageFiles(), 'package.json'
     @assertContains bundle.packageFiles(), 'node_modules/funky_rocket/package.json'
   
-  'test dependencies': ->
+  'test loading dependency inside main package': ->
     root_dir = path.join __dirname, 'fixtures', 'dependency-package'
     bundle = new Bundle root_dir
     result_in_closure = -> eval bundle.toString()
@@ -92,6 +92,21 @@ module.exports = class BundleTest extends Janitor.TestCase
     main = context.require './main'
     @assertEqual 'FUNKY ROCKET!', main.funky_rocket_name
 
+  'test dependency directly': ->
+    root_dir = path.join __dirname, 'fixtures', 'dependency-package'
+    bundle = new Bundle root_dir
+    result_in_closure = -> eval bundle.toString()
+    result_in_closure.call context = {}
+    funky_rocket = context.require 'funky_rocket'
+    @assertEqual 'FUNKY ROCKET!', funky_rocket.name
+  
+  'test loading non existing dependency': ->
+    root_dir = path.join __dirname, 'fixtures', 'dependency-package'
+    bundle = new Bundle root_dir
+    result_in_closure = -> eval bundle.toString()
+    result_in_closure.call context = {}
+    @assertThrows -> context.require 'none-existing'
+  
   'test loading dependency from parent dir': ->
     root_dir = path.join __dirname, 'fixtures', 'parent-dependency-package'
     bundle = new Bundle root_dir
