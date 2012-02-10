@@ -4,7 +4,8 @@
   "description": "Makes CommonJS packages usable from the browser.",
   "version": "0.0.1",
   "dependencies": {
-    "glob": "2.1.0"
+    "glob": "2.1.0",
+    "coffee-script": "1.2.0"
   },
   "devDependencies": {
     "janitor": "0.1.5"

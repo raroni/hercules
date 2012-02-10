@@ -1,6 +1,7 @@
 glob = require 'glob'
 path = require 'path'
 fs = require 'fs'
+CoffeeScript = require 'coffee-script'
 
 module.exports = class Bundle
   constructor: (@root_dir) ->
@@ -60,61 +61,8 @@ module.exports = class Bundle
     output += "}"
   
   toString: ->
-    # Todo: Convert this to Coffeescript somehow?
-    """
-      (function(context) {
-        var source_files = #{@fileMapAsJSONString()};
-        var package_files = #{JSON.stringify(@packageFileMap())};
-        var cache = {};
-        
-        var resolveFilePath = function(path, base_dir) {
-          var full_path;
-          if(base_dir) {
-             full_path = [base_dir, path].join('/');
-          } else {
-            full_path = path;
-          }
-            
-          var parts = full_path.split('/'), result = [], part;
-          
-          for(var i=0; parts.length>i; i++) {
-            part = parts[i];
-            if(part == '..') {
-              result.pop();
-            } else if(part != '.') {
-              result.push(part);
-            }
-          }
-          return result.join('/');
-        };
-        
-        var resolveModulePath = function(module_name, base_dir) {
-          var package_dir = resolveFilePath(base_dir + '/node_modules/' + module_name);
-          var package_file = package_dir + '/package.json'
-          var main_file = resolveFilePath(package_dir + '/' + package_files[package_file].main);
-          return main_file;
-        };
-        
-        var resolvePath = function(path, base_dir) {
-          if(path.substring(0, 1) == '.') {
-            return resolveFilePath(path, base_dir);
-          } else {
-            return resolveModulePath(path, base_dir);
-          }
-        };
-        context.require = function(path, base_dir) {
-          var resolved_path = resolvePath(path, base_dir);
-          if(cache[resolved_path]) return cache[resolved_path].exports;
-          
-          var module = cache[resolved_path] = { exports: {} };
-          
-          var base_dir = path.split('/').slice(0, -1).join('/');
-          var require = function(new_path) {
-            return context.require(new_path, base_dir);
-          };
-          source_files[resolved_path](module.exports, require, module);
-          return module.exports;
-        };
-        
-      })(this);
-    """
+    client_cs = fs.readFileSync path.join(__dirname, 'client.coffee'), 'utf-8'
+    client_js = CoffeeScript.compile client_cs
+    client_js = client_js.replace "'[[[source_files]]]'", @fileMapAsJSONString()
+    client_js = client_js.replace "'[[[package_files]]]'", JSON.stringify(@packageFileMap())
+    client_js
