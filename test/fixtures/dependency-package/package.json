@@ -1,0 +1,7 @@
+{
+  "name": "dependecy-test-package",
+  "version": "0.0.1",
+  "dependencies": {
+    "funky_rocket": "1.0.0"
+  }
+}
