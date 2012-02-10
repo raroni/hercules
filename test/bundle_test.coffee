@@ -105,7 +105,7 @@ module.exports = class BundleTest extends Janitor.TestCase
     bundle = new Bundle root_dir
     result_in_closure = -> eval bundle.toString()
     result_in_closure.call context = {}
-    @assertThrows -> context.require 'none-existing'
+    @assertThrows (-> context.require 'none-existing'), ((e) -> e.message == 'Module not found.')
   
   'test loading dependency from parent dir': ->
     root_dir = path.join __dirname, 'fixtures', 'parent-dependency-package'

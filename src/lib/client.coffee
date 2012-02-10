@@ -27,7 +27,7 @@
       package_dir = resolveFilePath base_dir + '/node_modules/' + module_name
       package_file = package_dir + '/package.json'
       package = package_files[package_file]
-      throw new Error 'Module not found' if !package && base_dir == '.'
+      throw new Error 'Module not found.' if !package && base_dir == '.'
     resolveFilePath(package_dir + '/' + package.main)
   
   resolvePath = (path, base_dir) ->

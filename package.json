@@ -8,7 +8,7 @@
     "coffee-script": "1.2.0"
   },
   "devDependencies": {
-    "janitor": "0.1.5"
+    "janitor": "0.1.7"
   },
   "engines": {
     "node": "~0.6.6"
