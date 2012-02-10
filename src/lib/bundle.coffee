@@ -50,7 +50,6 @@ module.exports = class Bundle
     path.replace(@root_dir, '').substring(1)
   
   fileMapAsJSONString: ->
-    # Todo: Move this out into own method
     output = "{"
     index = 0
     for path, contents of @sourceFileMap()
