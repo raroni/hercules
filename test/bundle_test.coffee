@@ -91,3 +91,11 @@ module.exports = class BundleTest extends Janitor.TestCase
     result_in_closure.call context = {}
     main = context.require './main'
     @assertEqual 'FUNKY ROCKET!', main.funky_rocket_name
+
+  'test loading dependency from parent dir': ->
+    root_dir = path.join __dirname, 'fixtures', 'parent-dependency-package'
+    bundle = new Bundle root_dir
+    result_in_closure = -> eval bundle.toString()
+    result_in_closure.call context = {}
+    main = context.require './lib/tester'
+    @assertEqual 'TUTTI FRUTTI', main.tutti_frutti_name

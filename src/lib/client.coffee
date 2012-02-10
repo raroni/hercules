@@ -21,9 +21,13 @@
     result.join '/'
   
   resolveModulePath = (module_name, base_dir) ->
-    package_dir = resolveFilePath(base_dir + '/node_modules/' + module_name)
-    package_file = package_dir + '/package.json'
-    resolveFilePath(package_dir + '/' + package_files[package_file].main)
+    index = 0
+    while !package
+      base_dir =  base_dir + '/..' unless index++ == 0
+      package_dir = resolveFilePath base_dir + '/node_modules/' + module_name
+      package_file = package_dir + '/package.json'
+      package = package_files[package_file]
+    resolveFilePath(package_dir + '/' + package.main)
   
   resolvePath = (path, base_dir) ->
     if path.substring(0, 1) == '.'

@@ -1,0 +1,6 @@
+{
+  "main": "./lib/tester.js",
+  "dependencies": {
+    "funky_rocket": "1.0.0"
+  }
+}
