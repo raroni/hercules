@@ -1,5 +1,5 @@
 Janitor = require 'janitor'
-Bundle = require '../src/browser-bundler/bundle'
+Bundle = require '../lib/browser-bundler/bundle'
 path = require 'path'
 
 module.exports = class BundleTest extends Janitor.TestCase

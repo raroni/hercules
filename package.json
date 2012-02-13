@@ -3,7 +3,7 @@
   "author": "Rasmus Rønn Nielsen <rasmusrnielsen@gmail.com>",
   "description": "Makes CommonJS packages usable from the browser.",
   "version": "0.0.1",
-  "main": "src/browser-bundler",
+  "main": "./lib/browser-bundler",
   "dependencies": {
     "glob": "2.1.0",
     "coffee-script": "1.2.0"

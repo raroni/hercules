@@ -60,8 +60,8 @@ module.exports = class Bundle
     output += "}"
   
   toString: ->
-    client_cs = fs.readFileSync path.join(__dirname, 'client.coffee'), 'utf-8'
-    client_js = CoffeeScript.compile client_cs
+    client_path = path.join __dirname, 'client.js'
+    client_js = fs.readFileSync client_path, 'utf-8'
     client_js = client_js.replace "'[[[source_files]]]'", @fileMapAsJSONString()
     client_js = client_js.replace "'[[[package_files]]]'", JSON.stringify(@packageFileMap())
     client_js
