@@ -91,7 +91,7 @@ module.exports = class BundleTest extends Janitor.TestCase
     result_in_closure.call context = {}
     main = context.require './main'
     @assertEqual 'FUNKY ROCKET!', main.funky_rocket_name
-
+  
   'test dependency directly': ->
     root_dir = path.join __dirname, 'fixtures', 'dependency-package'
     bundle = new Bundle root_dir
@@ -105,7 +105,7 @@ module.exports = class BundleTest extends Janitor.TestCase
     bundle = new Bundle root_dir
     result_in_closure = -> eval bundle.toString()
     result_in_closure.call context = {}
-    @assertThrows (-> context.require 'none-existing'), ((e) -> e.message == 'Module not found.')
+    @assertThrows (-> context.require 'none-existing'), ((e) -> e.message == "Cannot find module 'none-existing'")
   
   'test loading dependency from parent dir': ->
     root_dir = path.join __dirname, 'fixtures', 'parent-dependency-package'
@@ -114,3 +114,11 @@ module.exports = class BundleTest extends Janitor.TestCase
     result_in_closure.call context = {}
     main = context.require './lib/tester'
     @assertEqual 'TUTTI FRUTTI', main.tutti_frutti_name
+  
+  "test loading dependenc's dependency": ->
+    root_dir = path.join __dirname, 'fixtures', 'nested-dependencies-package'
+    bundle = new Bundle root_dir
+    result_in_closure = -> eval bundle.toString()
+    result_in_closure.call context = {}
+    main = context.require './main'
+    @assertEqual 'round', main.car.wheel.shape

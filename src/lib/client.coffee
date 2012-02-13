@@ -18,30 +18,29 @@
       else if part != '.'
         result.push part
     
-    result.join '/'
+    [result.join('/'), path.split('/').slice(0, -1).join('/')]
   
   resolveModulePath = (module_name, base_dir) ->
     index = 0
     while !package
       base_dir = base_dir.split('/').slice(0, -1).join '/' unless index++ == 0
-      package_dir = resolveFilePath base_dir + '/node_modules/' + module_name
+      package_dir = resolveFilePath(base_dir + '/node_modules/' + module_name)[0]
       package_file = package_dir + '/package.json'
       package = package_files[package_file]
-      throw new Error 'Module not found.' if !package && base_dir == '.'
-    resolveFilePath(package_dir + '/' + package.main)
+      throw new Error "Cannot find module '#{module_name}'" if !package && base_dir == '.'
+    [resolveFilePath(package_dir + '/' + package.main)[0], package_dir]
   
   resolvePath = (path, base_dir) ->
-    base_dir ||= '.'
-    if path.substring(0, 1) == '.'
-      resolveFilePath path, base_dir
-    else
-      resolveModulePath path, base_dir
+    resolver = if path.substring(0, 1) == '.' then resolveFilePath else resolveModulePath
+    resolver path, base_dir
   
   context.require = (path, base_dir) ->
-    resolved_path = resolvePath path, base_dir
+    base_dir ||= '.'
+    [resolved_path, base_dir] = resolvePath path, base_dir
+    
     return cache[resolved_path].exports if cache[resolved_path]
     module = cache[resolved_path] = exports: {}
-    base_dir = path.split('/').slice(0, -1).join('/')
+    
     require = (new_path) -> context.require new_path, base_dir
     source_files[resolved_path] module.exports, require, module
     module.exports

@@ -1,0 +1,6 @@
+{
+  "main": "./main",
+  "dependencies": {
+    "car": "1.0.0"
+  }
+}
