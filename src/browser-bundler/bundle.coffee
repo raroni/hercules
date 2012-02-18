@@ -1,7 +1,6 @@
 glob = require 'glob'
 path = require 'path'
 fs = require 'fs'
-CoffeeScript = require 'coffee-script'
 
 module.exports = class Bundle
   constructor: (@root_dir) ->
