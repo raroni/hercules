@@ -37,6 +37,7 @@
   context.require = (path, base_dir) ->
     base_dir ||= '.'
     [resolved_path, base_dir] = resolvePath path, base_dir
+    # kan man ikke bare udregne base_dir ved at fjerne sidste led i resolved_path
     
     return cache[resolved_path].exports if cache[resolved_path]
     module = cache[resolved_path] = exports: {}
