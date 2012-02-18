@@ -115,7 +115,7 @@ module.exports = class BundleTest extends Janitor.TestCase
     main = context.require './lib/tester'
     @assertEqual 'TUTTI FRUTTI', main.tutti_frutti_name
   
-  "test loading dependenc's dependency": ->
+  "test loading dependency's dependency": ->
     root_dir = path.join __dirname, 'fixtures', 'nested-dependencies-package'
     bundle = new Bundle root_dir
     result_in_closure = -> eval bundle.toString()
