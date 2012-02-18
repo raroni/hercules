@@ -3,14 +3,6 @@ Bundle = require '../lib/browser-bundler/bundle'
 path = require 'path'
 
 module.exports = class BundleTest extends Janitor.TestCase
-  'test finding files': ->
-    root_dir = path.join __dirname, 'fixtures', 'simple-package'
-    bundle = new Bundle root_dir
-    @assertEqual 3, bundle.sourceFiles().length
-    @assertContains bundle.sourceFiles(), 'main.js'
-    @assertContains bundle.sourceFiles(), 'lib/child1.js'
-    @assertContains bundle.sourceFiles(), 'lib/child2.js'
-  
   'test bundle defining require': ->
     root_dir = path.join __dirname, 'fixtures', 'simple-package'
     bundle = new Bundle root_dir
