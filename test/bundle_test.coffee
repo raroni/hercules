@@ -77,13 +77,6 @@ module.exports = class BundleTest extends Janitor.TestCase
     main = context.require './main'
     @assertEqual 'Rasmus', main.name
   
-  'test finding package files': ->
-    root_dir = path.join __dirname, 'fixtures', 'dependency-package'
-    bundle = new Bundle root_dir
-    @assertEqual 2, bundle.packageFiles().length
-    @assertContains bundle.packageFiles(), 'package.json'
-    @assertContains bundle.packageFiles(), 'node_modules/funky_rocket/package.json'
-  
   'test loading dependency inside main package': ->
     root_dir = path.join __dirname, 'fixtures', 'dependency-package'
     bundle = new Bundle root_dir

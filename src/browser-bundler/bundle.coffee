@@ -1,9 +1,11 @@
 glob = require 'glob'
 path = require 'path'
 fs = require 'fs'
+PackageHandler = require "./package_handler"
 
 module.exports = class Bundle
   constructor: (@root_dir) ->
+    @packages = new PackageHandler @root_dir
   
   sourceFiles: ->
     @_source_files ||= @buildSourceFileList()
@@ -29,22 +31,6 @@ module.exports = class Bundle
       map[file.replace('.js', '')] = fs.readFileSync file_path, 'utf-8'
     map
   
-  packageFiles: ->
-    @_package_files ||= @buildPackageFileList()
-  
-  buildPackageFileList: ->
-    glob_search_string = path.join @root_dir, '**package.json'
-    files = glob.sync glob_search_string
-    files.map @stripRootDir
-  
-  packageFileMap: ->
-    map = {}
-    for file in @packageFiles()
-      file_path = path.join @root_dir, file
-      content = fs.readFileSync file_path, 'utf-8'
-      map[file] = JSON.parse content
-    map
-  
   stripRootDir: (path) =>
     path.replace(@root_dir, '').substring(1)
   
@@ -62,5 +48,5 @@ module.exports = class Bundle
     client_path = path.join __dirname, 'client.js'
     client_js = fs.readFileSync client_path, 'utf-8'
     client_js = client_js.replace "'[[[source_files]]]'", @fileMapAsJSONString()
-    client_js = client_js.replace "'[[[package_files]]]'", JSON.stringify(@packageFileMap())
+    client_js = client_js.replace "'[[[package_files]]]'", JSON.stringify(@packages.map())
     client_js
