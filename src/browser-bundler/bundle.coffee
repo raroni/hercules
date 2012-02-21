@@ -25,6 +25,7 @@ module.exports = class Bundle
     map = {}
     map['package.json'] = @package.metaData() if @package.metaData()
     for package in @package.packages()
+      throw new Error 'Cannot bundle packages that require node.js' if package.metaData().engines?.node
       map[@stripRootDir(package.metaDataFile())] = package.metaData()
     JSON.stringify map
   

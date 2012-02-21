@@ -90,7 +90,8 @@ module.exports = class BundleTest extends Janitor.TestCase
     bundle = new Bundle root_dir
     result_in_closure = -> eval bundle.toString()
     result_in_closure.call context = {}
-    @assertThrows (-> context.require 'none-existing'), ((e) -> e.message == "Cannot find module 'none-existing'")
+    procedure = -> context.require 'none-existing'
+    @assertThrows (e) -> e.message == "Cannot find module 'none-existing'"
   
   'test loading dependency from parent dir': ->
     root_dir = path.join __dirname, 'fixtures', 'parent-dependency-package'
@@ -107,3 +108,9 @@ module.exports = class BundleTest extends Janitor.TestCase
     result_in_closure.call context = {}
     main = context.require './main'
     @assertEqual 'round', main.car.wheel.shape
+  
+  "test loading package depending on nodejs package": ->
+    root_dir = path.join __dirname, 'fixtures', 'nodejs-dependency-package'
+    bundle = new Bundle root_dir
+    procedure = -> bundle.toString()
+    @assertThrows procedure, (e) -> e.message == "Cannot bundle packages that require node.js"

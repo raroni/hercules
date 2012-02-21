@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "fancy-fs": "1.0.0"
+  },
+  "main": "./main"
+}
