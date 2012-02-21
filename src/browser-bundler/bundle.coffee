@@ -23,9 +23,9 @@ module.exports = class Bundle
   
   packageFilesAsJSON: ->
     map = {}
-    for file in @package.packageFiles()
-      contents = @readFile file
-      map[file] = JSON.parse contents
+    map['package.json'] = @package.metaData() if @package.metaData()
+    for package in @package.packages()
+      map[@stripRootDir(package.metaDataFile())] = package.metaData()
     JSON.stringify map
   
   toString: ->
@@ -34,3 +34,6 @@ module.exports = class Bundle
     client_js = client_js.replace "'[[[source_files]]]'", @sourceFilesAsJSON()
     client_js = client_js.replace "'[[[package_files]]]'", @packageFilesAsJSON()
     client_js
+  
+  stripRootDir: (path) =>
+    path.replace(@root_dir, '').substring(1)

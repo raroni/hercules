@@ -13,30 +13,24 @@ module.exports = class PackageTest extends Janitor.TestCase
     package = new Package root_dir
     @assertEqual 2, package.packages().length
   
-  'test number of dependending packages with nested dependencies': ->
-    root_dir = path.join __dirname, 'fixtures', 'nested-dependencies-package'
-    package = new Package root_dir
-    @assertEqual 1, package.packages().length
-  
-  'test finding package files': ->
+  'test finding packages': ->
     root_dir = path.join __dirname, 'fixtures', 'dependency-package'
     package = new Package root_dir
-    @assertEqual 2, package.packageFiles().length
-    @assertContains package.packageFiles(), 'package.json'
-    @assertContains package.packageFiles(), 'node_modules/funky_rocket/package.json'
+    @assertEqual 1, package.packages().length
+    @assertEqual package.packages()[0].metaData().name, 'funky-rocket'
   
-  'test finding package files in package without any package files': ->
+  'test finding packages in package with no dependencies': ->
     root_dir = path.join __dirname, 'fixtures', 'simple-package'
     package = new Package root_dir
-    @assertEqual 0, package.packageFiles().length
+    @assertEqual 0, package.packages().length
   
   'test finding package files with nested dependencies': ->
     root_dir = path.join __dirname, 'fixtures', 'nested-dependencies-package'
     package = new Package root_dir
-    @assertEqual 3, package.packageFiles().length
-    @assertContains package.packageFiles(), 'package.json'
-    @assertContains package.packageFiles(), 'node_modules/car/package.json'
-    @assertContains package.packageFiles(), 'node_modules/car/node_modules/wheel/package.json'
+    @assertEqual 2, package.packages().length
+    meta_data_names = package.packages().map (p) -> p.metaData().name
+    @assertContains meta_data_names, 'car'
+    @assertContains meta_data_names, 'wheel'
   
   'test finding source files': ->
     root_dir = path.join __dirname, 'fixtures', 'simple-package'

@@ -6,10 +6,12 @@ module.exports = class Package
   constructor: (@root_dir) ->
   
   metaData: ->
-    return unless path.existsSync path.join(@root_dir, 'package.json')
-    file = path.join @root_dir, 'package.json'
-    contents = fs.readFileSync file, 'utf-8'
+    return unless path.existsSync @metaDataFile()
+    contents = fs.readFileSync @metaDataFile(), 'utf-8'
     JSON.parse contents
+  
+  metaDataFile: ->
+    path.join @root_dir, 'package.json'
   
   sourceFiles: ->
     glob_search_string = path.join @root_dir, '**.**'
@@ -23,13 +25,6 @@ module.exports = class Package
     
     files
   
-  packages: ->
-    glob_search_string = path.join @root_dir, '/node_modules/*/package.json'
-    files = glob.sync glob_search_string
-    files.map (file) =>
-      package_path = path.dirname(file)
-      new Package package_path
-  
   shouldBeIncluded: (file) =>
     ext = path.extname(file).substring(1)
     ext == 'js' && file.indexOf('node_modules') != 0
@@ -37,13 +32,16 @@ module.exports = class Package
   stripRootDir: (path) =>
     path.replace(@root_dir, '').substring(1)
   
-  packageFiles: ->
-    @_blah ||= (
-      files = []
-      files.push 'package.json' if @metaData()
-      for package in @packages()
-        for package_file in package.packageFiles()
-          package_path = path.join @stripRootDir(package.root_dir), package_file
-          files.push package_path
-      files
+  packages: ->
+    @_packages ||= (
+      packages = []
+      glob_search_string = path.join @root_dir, '/node_modules/*/package.json'
+      files = glob.sync glob_search_string
+      for file in files
+        package_path = path.dirname(file)
+        package = new Package package_path
+        packages.push package
+        for sub_package in package.packages()
+          packages.push sub_package
+      packages
     )
