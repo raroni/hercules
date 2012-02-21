@@ -60,3 +60,14 @@ module.exports = class PackageTest extends Janitor.TestCase
     @assertContains package.sourceFiles(), 'main.js'
     @assertContains package.sourceFiles(), 'node_modules/churanimo/main.js'
     @assertContains package.sourceFiles(), 'node_modules/cowabunga/my_main.js'
+  
+  'test meta data': ->
+    root_dir = path.join __dirname, 'fixtures', 'dependency-package'
+    package = new Package root_dir
+    @assertEqual 'dependecy-test-package', package.metaData().name
+    @assertEqual '0.0.1', package.metaData().version
+  
+  'test meta data for package without package file': ->
+    root_dir = path.join __dirname, 'fixtures', 'simple-package'
+    package = new Package root_dir
+    @assert !package.metaData()

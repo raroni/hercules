@@ -1,8 +1,15 @@
 glob = require 'glob'
 path = require 'path'
+fs = require 'fs'
 
 module.exports = class Package
   constructor: (@root_dir) ->
+  
+  metaData: ->
+    return unless path.existsSync path.join(@root_dir, 'package.json')
+    file = path.join @root_dir, 'package.json'
+    contents = fs.readFileSync file, 'utf-8'
+    JSON.parse contents
   
   sourceFiles: ->
     glob_search_string = path.join @root_dir, '**.**'
@@ -33,7 +40,7 @@ module.exports = class Package
   packageFiles: ->
     @_blah ||= (
       files = []
-      files.push 'package.json' if path.existsSync path.join(@root_dir, 'package.json')
+      files.push 'package.json' if @metaData()
       for package in @packages()
         for package_file in package.packageFiles()
           package_path = path.join @stripRootDir(package.root_dir), package_file
