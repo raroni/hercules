@@ -1,0 +1,7 @@
+{
+  "main": "./main",
+  "dependencies": {
+    "cowabunga": "1.0.0",
+    "churanimo": "1.0.0"
+  }
+}
