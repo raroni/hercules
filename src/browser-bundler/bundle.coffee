@@ -11,15 +11,12 @@ module.exports = class Bundle
     fs.readFileSync path.join(@root_dir, file), 'utf-8'
   
   sourceFilesAsJSON: ->
-    output = "{"
-    index = 0
-    for file in @package.sourceFiles()
-      contents = @readFile file
-      output += ", " if index++ != 0
-      output += JSON.stringify file.replace('.js', '')
-      output += ':'
-      output += "function(exports, require, module) { #{contents} }"
-    output += "}"
+    files = (
+      for file in @package.sourceFiles()
+        contents = @readFile file
+        "'#{file.replace('.js', '')}': function(exports, require, module) { #{contents} }"
+    )
+    "{ #{files.join()} }"
   
   packageFilesAsJSON: ->
     map = {}
