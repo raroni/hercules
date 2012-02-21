@@ -1,6 +1,6 @@
 (->
-  source_files = '[[[source_files]]]'
-  package_files = '[[[package_files]]]'
+  source_files = '[[source_files]]'
+  package_files = '[[package_files]]'
   cache = {}
   
   resolveFilePath = (path, base_dir) ->
