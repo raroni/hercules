@@ -13,5 +13,14 @@
   },
   "engines": {
     "node": "~0.6.6"
-  }
+  },
+  "repository":   {
+    "type": "git",
+    "url": "git://github.com/rasmusrn/hercules.git"
+  },
+  "licenses": [{
+    "type": "MIT",
+    "url": "http://raw.github.com/rasmusrn/hercules/master/LICENSE"
+  }],
+  "homepage": "http://github.com/rasmusrn/hercules"
 }
