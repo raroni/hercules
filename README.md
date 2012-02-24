@@ -27,6 +27,10 @@ source = "
 "
 ```
 
+## Installation
+
+Add `hercules` to your `package.json` and run `npm install`. Then you'll be able to do `require 'hercules'`.
+
 ## Dependencies
 
 Hercules automatically add dependencies defined in your `package.json` (read more about [package.json](http://wiki.commonjs.org/wiki/Packages/1.0)).
@@ -38,3 +42,21 @@ Hercules = require 'hercules'
 bundle = Hercules.bundle '/path/to/my/package', ignore_node_packages: true
 source = bundle.toString()
 ```
+
+## Alternatives
+
+Here's a list of other libraries that somehow enables you to run Javascript in the browser.
+
+### [Stitch](https://github.com/sstephenson/stitch)
+
+Very elegant and simple! Unfortunately, it is based on load paths which makes its require behaves different from node's. Written by one of my heroes, [Sam Stephenson](http://twitter.com/sstephenson).
+
+### [Browserify](https://github.com/substack/node-browserify)
+
+Mature solution with a lot of options and features. It doesn't handle dependencies however. It tries to do too many different things for my taste - but you might see this as an advantage.
+
+### Other alternatives I haven't tried:
+
+* [browser-require](https://github.com/rsms/browser-require)
+* [browser-require](https://github.com/bnoguchi/browser-require) (another one with the same name)
+* [brequire](https://github.com/weepy/brequire)
