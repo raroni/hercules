@@ -1,5 +1,5 @@
 {
-  "name": "browser-bundler",
+  "name": "hercules",
   "author": "Rasmus Rønn Nielsen <rasmusrnielsen@gmail.com>",
   "description": "Makes CommonJS packages usable from the browser.",
   "version": "0.0.1",
