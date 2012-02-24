@@ -4,7 +4,7 @@ fs = require 'fs'
 Package = require "./package"
 
 module.exports = class Bundle
-  constructor: (@root_dir) ->
+  constructor: (@root_dir, @options) ->
     @package = new Package @root_dir
   
   sourceFilesAsJSON: ->
@@ -19,8 +19,8 @@ module.exports = class Bundle
     map = {}
     map['package.json'] = @package.metaData() if @package.metaData()
     for package in @package.packages()
-      throw new Error 'Cannot bundle packages that require node.js' if package.metaData().engines?.node
-      map[@stripRootDir(package.metaDataFile())] = package.metaData()
+      throw new Error 'Cannot bundle packages that require node.js' if !@options?.ignore_node_packages && package.requiresNode()
+      map[@stripRootDir(package.metaDataFile())] = package.metaData() unless package.requiresNode()
     JSON.stringify map
   
   toString: ->

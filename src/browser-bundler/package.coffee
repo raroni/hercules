@@ -30,6 +30,9 @@ module.exports = class Package
   packages: ->
     @_packages ||= @buildPackages()
   
+  requiresNode: ->
+    !!@metaData()?.engines?.node
+  
   buildPackages: ->
     packages = []
     glob_search_string = path.join @root_dir, '/node_modules/*/package.json'

@@ -65,3 +65,16 @@ module.exports = class PackageTest extends Janitor.TestCase
     root_dir = path.join __dirname, 'fixtures', 'simple-package'
     package = new Package root_dir
     @assert !package.metaData()
+  
+  'test requires node': ->
+    root_dir = path.join __dirname, 'fixtures', 'simple-package'
+    package = new Package root_dir
+    @assert !package.requiresNode()
+    
+    root_dir = path.join __dirname, 'fixtures', 'dependency-package'
+    package = new Package root_dir
+    @assert !package.requiresNode()
+    
+    root_dir = path.join __dirname, 'fixtures', 'node-package'
+    package = new Package root_dir
+    @assert package.requiresNode()
