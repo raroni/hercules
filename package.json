@@ -3,7 +3,7 @@
   "author": "Rasmus Rønn Nielsen <rasmusrnielsen@gmail.com>",
   "description": "Makes CommonJS packages usable from the browser.",
   "version": "0.0.1",
-  "main": "./lib/browser-bundler",
+  "main": "./lib/hercules",
   "dependencies": {
     "glob": "2.1.0"
   },

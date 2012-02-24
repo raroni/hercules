@@ -1,5 +1,5 @@
 Janitor = require 'janitor'
-Package = require '../lib/browser-bundler/package'
+Package = require '../lib/hercules/package'
 path = require 'path'
 
 module.exports = class PackageTest extends Janitor.TestCase
