@@ -45,7 +45,7 @@ source = bundle.toString()
 
 ## Alternatives
 
-Here's a list of other libraries that somehow enables you to run Javascript in the browser.
+Here's a list of other libraries that somehow enables you to use `require` in the browser.
 
 ### [Stitch](https://github.com/sstephenson/stitch)
 
