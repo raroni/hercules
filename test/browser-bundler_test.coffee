@@ -10,3 +10,8 @@ module.exports = class BundleTest extends Janitor.TestCase
     result_in_closure.call context = {}
     main = context.require './main'
     @assertEqual 'Rasmus', main.name
+  
+  'test passing options correctly': ->
+    bundle_path = path.join __dirname, 'fixtures', 'simple-package'
+    bundle = BrowserBundler.bundle bundle_path, test: true
+    @assert bundle.options?.test
