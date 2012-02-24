@@ -4,7 +4,7 @@ By mimicking node.js' `require`, Herluces lets you use your CommonJS packages in
 
 This enables you to develop and test your code server side, and bundle it for the browser later.
 
-Example code below is written in [Coffeescript](http://coffeescript.org/) but plain Javascript will do too.
+The code examples below are written in [Coffeescript](http://coffeescript.org/) but plain Javascript will work too.
 
 ## How does it work?
 
