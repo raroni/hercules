@@ -26,7 +26,7 @@ module.exports = class Bundle
   toString: ->
     client_path = path.join __dirname, 'client.js'
     client_js = fs.readFileSync client_path, 'utf-8'
-    client_js = client_js.replace "'[[source_files]]'", @sourceFilesAsJSON()
+    client_js = client_js.replace "'[[source_files]]'", @sourceFilesAsJSON().replace("$", "$$$$")
     client_js.replace "'[[package_files]]'", @packageFilesAsJSON()
   
   stripRootDir: (path) =>

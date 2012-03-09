@@ -114,7 +114,7 @@ module.exports = class BundleTest extends Janitor.TestCase
     bundle = new Bundle root_dir
     procedure = -> bundle.toString()
     @assertThrows procedure, (e) -> e.message == "Cannot bundle packages that require node.js"
-
+  
   "test ignoring node packages": ->
     root_dir = path.join __dirname, 'fixtures', 'node-dependency-package'
     bundle = new Bundle root_dir, ignore_node_packages: true
@@ -124,3 +124,14 @@ module.exports = class BundleTest extends Janitor.TestCase
     
     procedure = -> context.require('fancy-fs')
     @assertThrows procedure, (e) -> e.message == "Cannot find module 'fancy-fs'"
+  
+  'test package containing code with dollar sign followed by apostrophe': ->
+    # As detailed on the page below, String#replace acts special for strings with $'
+    # https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_string_as_a_parameter
+    
+    root_dir = path.join __dirname, 'fixtures', 'dollar-sign-apostrophe-package'
+    bundle = new Bundle root_dir
+    result_in_closure = -> eval bundle.toString()
+    result_in_closure.call context = {}
+    main = context.require './main'
+    @assertEqual 'Rasmus', main.name
