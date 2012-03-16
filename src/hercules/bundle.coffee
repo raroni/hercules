@@ -11,7 +11,7 @@ module.exports = class Bundle
     files = (
       for file in @package.sourceFiles()
         contents = fs.readFileSync path.join(@root_dir, file), 'utf-8'
-        "'#{file.replace('.js', '')}': function(exports, require, module) { #{contents} }"
+        "'#{file}': function(exports, require, module) { #{contents} }"
     )
     "{ #{files.join()} }"
   

@@ -18,6 +18,8 @@ module.exports = class BundleTest extends Janitor.TestCase
     result_in_closure.call context = {}
     main = context.require './main'
     @assertEqual 'Rasmus', main.name
+    main = context.require './main.js'
+    @assertEqual 'Rasmus', main.name
   
   'test chained require': ->
     root_dir = path.join __dirname, 'fixtures', 'simple-package'
