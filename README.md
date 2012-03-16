@@ -45,6 +45,10 @@ bundle = Hercules.bundle '/path/to/my/package', ignore_node_packages: true
 source = bundle.toString()
 ```
 
+## Example
+
+If you want to play with Hercules, I recommend checking out [this little example app](https://github.com/rasmusrn/hercules_example).
+
 ## Alternatives
 
 Here's a list of other libraries that somehow enables you to use `require` in the browser.
