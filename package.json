@@ -2,7 +2,7 @@
   "name": "hercules",
   "author": "Rasmus Rønn Nielsen <rasmusrnielsen@gmail.com>",
   "description": "Makes CommonJS packages usable in the browser.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "./lib/hercules",
   "dependencies": {
     "glob": "2.1.0"
