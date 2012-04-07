@@ -3,7 +3,7 @@ path = require 'path'
 fs = require 'fs'
 
 module.exports = class Package
-  constructor: (@root_dir) ->
+  constructor: (@rootDir) ->
   
   metaData: ->
     return unless path.existsSync @metaDataFile()
@@ -11,21 +11,21 @@ module.exports = class Package
     JSON.parse contents
   
   metaDataFile: ->
-    path.join @root_dir, 'package.json'
+    path.join @rootDir, 'package.json'
   
   sourceFiles: ->
-    glob_search_string = path.join @root_dir, '**.js'
-    files = glob.sync glob_search_string
+    globSearchString = path.join @rootDir, '**.js'
+    files = glob.sync globSearchString
     files = files.map (f) => @stripRootDir(f)
     files = files.filter (file) -> file.indexOf('node_modules') != 0
     for package in @packages()
       for file in package.sourceFiles()
-        files.push path.join(@stripRootDir(package.root_dir), file)
+        files.push path.join(@stripRootDir(package.rootDir), file)
     
     files
   
   stripRootDir: (path) =>
-    path.replace(@root_dir, '').substring(1)
+    path.replace(@rootDir, '').substring(1)
   
   packages: ->
     @_packages ||= @buildPackages()
@@ -35,9 +35,9 @@ module.exports = class Package
   
   buildPackages: ->
     packages = []
-    glob_search_string = path.join @root_dir, '/node_modules/*/package.json'
-    for file in glob.sync(glob_search_string)
+    globSearchString = path.join @rootDir, '/node_modules/*/package.json'
+    for file in glob.sync(globSearchString)
       package = new Package path.dirname(file)
       packages.push package
-      packages.push sub_package for sub_package in package.packages()
+      packages.push subPackage for subPackage in package.packages()
     packages

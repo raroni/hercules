@@ -37,11 +37,11 @@ Add `hercules` to your `package.json` and run `npm install`. Then you'll be able
 
 Hercules automatically add dependencies defined in your `package.json` (read more about [package.json](http://wiki.commonjs.org/wiki/Packages/1.0)).
 
-If you try to bundle a package that depends on a package that require node (defined in `package.json`'s `engines` field), Hercules will throw an error. If you instead want Hercules to just ignore these packages, you can use `ignore_node_packages` like this:
+If you try to bundle a package that depends on a package that require node (defined in `package.json`'s `engines` field), Hercules will throw an error. If you instead want Hercules to just ignore these packages, you can use `ignoreNodePackages` like this:
 
 ```coffeescript
 Hercules = require 'hercules'
-bundle = Hercules.bundle '/path/to/my/package', ignore_node_packages: true
+bundle = Hercules.bundle '/path/to/my/package', ignoreNodePackages: true
 source = bundle.toString()
 ```
 

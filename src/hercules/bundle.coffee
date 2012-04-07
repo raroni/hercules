@@ -4,13 +4,13 @@ fs = require 'fs'
 Package = require "./package"
 
 module.exports = class Bundle
-  constructor: (@root_dir, @options) ->
-    @package = new Package @root_dir
+  constructor: (@rootDir, @options) ->
+    @package = new Package @rootDir
   
   sourceFilesAsJSON: ->
     files = (
       for file in @package.sourceFiles()
-        contents = fs.readFileSync path.join(@root_dir, file), 'utf-8'
+        contents = fs.readFileSync path.join(@rootDir, file), 'utf-8'
         "'#{file}': function(exports, require, module) { #{contents} }"
     )
     "{ #{files.join()} }"
@@ -19,15 +19,15 @@ module.exports = class Bundle
     map = {}
     map['package.json'] = @package.metaData() if @package.metaData()
     for package in @package.packages()
-      throw new Error 'Cannot bundle packages that require node.js' if !@options?.ignore_node_packages && package.requiresNode()
+      throw new Error 'Cannot bundle packages that require node.js' if !@options?.ignoreNodePackages && package.requiresNode()
       map[@stripRootDir(package.metaDataFile())] = package.metaData() unless package.requiresNode()
     JSON.stringify map
   
   toString: ->
-    client_path = path.join __dirname, 'client.js'
-    client_js = fs.readFileSync client_path, 'utf-8'
-    client_js = client_js.replace "'[[source_files]]'", @sourceFilesAsJSON().replace(/\$/g, "$$$$")
-    client_js.replace "'[[package_files]]'", @packageFilesAsJSON()
+    clientPath = path.join __dirname, 'client.js'
+    clientJs = fs.readFileSync clientPath, 'utf-8'
+    clientJs = clientJs.replace "'[[sourceFiles]]'", @sourceFilesAsJSON().replace(/\$/g, "$$$$")
+    clientJs.replace "'[[packageFiles]]'", @packageFilesAsJSON()
   
   stripRootDir: (path) =>
-    path.replace(@root_dir, '').substring(1)
+    path.replace(@rootDir, '').substring(1)
