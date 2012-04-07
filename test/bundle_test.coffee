@@ -111,13 +111,13 @@ module.exports = class BundleTest extends Janitor.TestCase
     main = context.require './main'
     @assertEqual 'round', main.car.wheel.shape
   
-  "test loading package depending on nodejs package": ->
+  'test loading package depending on nodejs package': ->
     root_dir = path.join __dirname, 'fixtures', 'node-dependency-package'
     bundle = new Bundle root_dir
     procedure = -> bundle.toString()
     @assertThrows procedure, (e) -> e.message == "Cannot bundle packages that require node.js"
   
-  "test ignoring node packages": ->
+  'test ignoring node packages': ->
     root_dir = path.join __dirname, 'fixtures', 'node-dependency-package'
     bundle = new Bundle root_dir, ignore_node_packages: true
     result_in_closure = -> eval bundle.toString()

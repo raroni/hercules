@@ -18,7 +18,7 @@
       else if part != '.'
         result.push part
     
-    [result.join('/'), path.split('/').slice(0, -1).join('/')]
+    result.join '/'
   
   resolveFilePath = (path, base_dir) ->
     path += '.js' unless path.match ///\.js$///
@@ -28,18 +28,20 @@
     index = 0
     while !package
       base_dir = base_dir.split('/').slice(0, -1).join '/' unless index++ == 0
-      package_dir = resolvePath('node_modules/' + module_name, base_dir)[0]
+      package_dir = resolvePath('node_modules/' + module_name, base_dir)
       package_file = package_dir + '/package.json'
       package = package_files[package_file]
       throw new Error "Cannot find module '#{module_name}'" if !package && !base_dir
-    [resolveFilePath(package_dir + '/' + package.main)[0], package_dir]
+    
+    packageMainPath = [package_dir, package.main].join '/'
+    resolveFilePath packageMainPath
   
   resolve = (path, base_dir) ->
     resolver = if path.substring(0, 1) == '.' then resolveFilePath else resolveModulePath
     resolver path, base_dir
   
   this.require = (path, base_dir = '.') =>
-    [resolved_path, base_dir] = resolve path, base_dir
+    resolved_path = resolve path, base_dir
     
     base_dir_parts = resolved_path.split '/'
     base_dir_parts.pop()
