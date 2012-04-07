@@ -27,7 +27,7 @@ module.exports = class BundleTest extends Janitor.TestCase
     result_in_closure = -> eval bundle.toString()
     result_in_closure.call context = {}
     main = context.require './main'
-    @assertEqual 'Child 1', main.child1.name
+    @assertEqual 'Child 3', main.child1.child2.child3.name
   
   'test caching': ->
     root_dir = path.join __dirname, 'fixtures', 'simple-package'

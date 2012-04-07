@@ -35,10 +35,11 @@ module.exports = class PackageTest extends Janitor.TestCase
   'test finding source files': ->
     root_dir = path.join __dirname, 'fixtures', 'simple-package'
     package = new Package root_dir
-    @assertEqual 3, package.sourceFiles().length
+    @assertEqual 4, package.sourceFiles().length
     @assertContains package.sourceFiles(), 'main.js'
     @assertContains package.sourceFiles(), 'lib/child1.js'
     @assertContains package.sourceFiles(), 'lib/child2.js'
+    @assertContains package.sourceFiles(), 'lib/child3.js'
   
   'test finding source files of package with dependencies': ->
     root_dir = path.join __dirname, 'fixtures', 'dependency-package'

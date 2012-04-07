@@ -28,20 +28,22 @@
     index = 0
     while !package
       base_dir = base_dir.split('/').slice(0, -1).join '/' unless index++ == 0
-      package_dir = resolvePath(base_dir + '/node_modules/' + module_name)[0]
+      package_dir = resolvePath('node_modules/' + module_name, base_dir)[0]
       package_file = package_dir + '/package.json'
       package = package_files[package_file]
-      throw new Error "Cannot find module '#{module_name}'" if !package && base_dir == '.'
+      throw new Error "Cannot find module '#{module_name}'" if !package && !base_dir
     [resolveFilePath(package_dir + '/' + package.main)[0], package_dir]
   
   resolve = (path, base_dir) ->
     resolver = if path.substring(0, 1) == '.' then resolveFilePath else resolveModulePath
     resolver path, base_dir
   
-  this.require = (path, base_dir) =>
-    base_dir ||= '.'
+  this.require = (path, base_dir = '.') =>
     [resolved_path, base_dir] = resolve path, base_dir
-    # kan man ikke bare udregne base_dir ved at fjerne sidste led i resolved_path
+    
+    base_dir_parts = resolved_path.split '/'
+    base_dir_parts.pop()
+    base_dir = base_dir_parts.join('/') || null
     
     return cache[resolved_path].exports if cache[resolved_path]
     module = cache[resolved_path] = exports: {}
