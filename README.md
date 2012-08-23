@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/rasmusrn/hercules.png)](http://travis-ci.org/rasmusrn/hercules)
 # Hercules
 
 By mimicking node.js' `require`, Herluces lets you use your CommonJS packages in the browser. It even supports `packages.json` dependencies.
